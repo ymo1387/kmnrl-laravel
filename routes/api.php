@@ -15,10 +15,6 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
@@ -32,5 +28,3 @@ Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], funct
         Route::apiResource('orders',OrderController::class)->except(['destroy']);
     });
 });
-
-// 43|yRH2WAd51PsCHu0yBoLTvdxUanbLXf2gStn7t1KU user1

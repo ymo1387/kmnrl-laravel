@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Specification;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,24 +12,8 @@ use App\Http\Resources\AccountResource;
 
 class AuthController extends Controller
 {
-    // product specifications create
-    // public function specificationsForm (Request $req) {
-    //     foreach ($req->spec as $k => $v) {
-    //         if (!$v) {
-    //             continue;
-    //         }
-    //         $data = [
-    //             'product_id' => $req->product_id,
-    //             'index' => $k,
-    //             'text' => $v,
-    //         ];
-    //         Specification::create($data);
-    //     }
-    //     return to_route('form');
-    // }
-
     public function account () {
-        $user = auth()->user()->load('info');
+        $user = auth()->user()->load("info:user_id,address,phone");
         return new AccountResource($user);
     }
 
@@ -39,26 +22,28 @@ class AuthController extends Controller
         if (!Auth::attempt($credentials)) {
             return response()->json(["errors"=>['password'=>'Password incorrect']], 401);
         }
-
+        // get current user
         $user = Auth::user();
+        // delete user tokens
         $user->tokens()->delete();
+        // check remember exist & true or false
         $isRemember = filter_var($req['remember'], FILTER_VALIDATE_BOOLEAN);
-
+        // create token
         $token = $this->createAuthToken($user, $isRemember);
-        return response()->json(['user'=>$user,'token'=>$token->plainTextToken], 200);
-        // return response()->json(['user'=>$user,'token'=>$token->plainTextToken,'expires'=>$token->accessToken->expires_at], 200);
+        return response()->json(['user'=>$user,'token'=>$token->plainTextToken, 'remember'=>$isRemember], 200);
     }
 
     public function register (RegisterRequest $req) {
         $data = $req->validated();
-
+        // create new user
         $user = User::create([
             'username' => $data['username'] ?? null,
             'email' => $data['email'],
             'password' => Hash::make($data['password'])
         ]);
-        $isRemember = filter_var($req['remember'], FILTER_VALIDATE_BOOLEAN);
-
+        // remember to false
+        $isRemember = false;
+        // create token
         $token = $this->createAuthToken($user, $isRemember)->plainTextToken;
         return response()->json(['user'=>$user,'token'=>$token], 200);
     }

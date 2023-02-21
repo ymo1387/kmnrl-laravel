@@ -17,8 +17,7 @@ class AccountResource extends JsonResource
         return [
             'name' => $this->username,
             'email' => $this->email,
-            'address' => $this->info->address,
-            'phone' => $this->info->phone,
+            'info' => $this->info,
         ];
     }
     public static $wrap = null;
