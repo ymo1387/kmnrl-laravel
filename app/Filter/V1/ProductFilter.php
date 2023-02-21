@@ -14,9 +14,9 @@ class ProductFilter extends ApiFilter {
         'price' => ['eq','neq','lt','lte','gt','gte'],
     ];
 
-    protected $columnMap = [
-        'name' => 'slug',
-    ];
+    // protected $columnMap = [
+    //     'name' => 'slug',
+    // ];
 
     protected $operatorMap = [
         'eq' => '=',
