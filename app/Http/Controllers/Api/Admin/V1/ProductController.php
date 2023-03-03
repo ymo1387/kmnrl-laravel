@@ -39,14 +39,11 @@ class ProductController extends Controller
         if ($request->family) {
             $existFamily = Family::where(['name'=>$request->family])->first();
             if ($existFamily) {
-                $existFamily->count += 1;
-                $existFamily->save();
                 $product->family_id = $existFamily->id;
             } else {
                 $family = new Family();
                 $family->name = Str::title($request->family);
                 $family->slug = Str::slug($request->family,'-');
-                $family->count = 1;
                 $family->save();
                 $product->family_id = $family->id;
             }
@@ -143,14 +140,11 @@ class ProductController extends Controller
             $existFamily = Family::where(['name'=>$request->family])->first();
             if ($existFamily) {
                 $product->family_id = $existFamily->id;
-                $existFamily->count += 1;
-                // $existFamily->save();
             } else {
                 $family = new Family();
-                $family->name = $request->family;
+                $family->name = Str::title($request->family);
                 $family->slug = Str::slug($request->family,'-');
-                $family->count = 1;
-                // $family->save();
+                $family->save();
                 $product->family_id = $family->id;
             }
         }

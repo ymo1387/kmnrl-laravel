@@ -11,8 +11,7 @@ class Family extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'slug',
-        'count'
+        'slug'
     ];
 
     public $timestamps = false;
