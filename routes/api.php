@@ -27,4 +27,11 @@ Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], funct
         Route::apiResource('carts',CartController::class);
         Route::apiResource('orders',OrderController::class)->except(['destroy']);
     });
+
+    Route::get('families',FamilyController::class);
+    Route::get('tags',TagController::class);
+});
+
+Route::group(['prefix'=>'v1/admin', 'namespace'=>'App\Http\Controllers\Api\Admin\V1'], function () {
+    Route::apiResource('products',ProductController::class);
 });

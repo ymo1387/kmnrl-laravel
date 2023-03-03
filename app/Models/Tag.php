@@ -13,6 +13,7 @@ class Tag extends Model
         'info',
     ];
 
-    protected $visible = ['name','info'];
+    protected $hidden = ["pivot"];
+
     public $timestamps = false;
 }

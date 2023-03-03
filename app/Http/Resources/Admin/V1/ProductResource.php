@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\V1;
+namespace App\Http\Resources\Admin\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductGridResource extends JsonResource
+class ProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,13 +18,10 @@ class ProductGridResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'price' => $this->price,
-            'tags' => $this->tags,
-            'variantCount' => $this->family_id
-                ? $this->family->products_count
-                : null,
+            'type' => $this->type,
             'instock' => $this->instock->instock,
-            'image' => $this->mainImage,
+            'base' => $this->price->base,
+            'discount' => $this->price->discount,
         ];
     }
 }

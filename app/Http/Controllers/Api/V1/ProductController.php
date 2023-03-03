@@ -30,7 +30,10 @@ class ProductController extends Controller
             'tags',
             'instock',
             'mainImage',
-            'family']);
+            'family'=>function($query) {
+                $query->withCount('products');
+            }
+        ]);
 
         $products = $products->paginate(10)->appends($request->query());
         return new ProductGridCollection($products);
