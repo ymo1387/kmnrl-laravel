@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Admin\V1;
 use App\Models\Image;
 use App\Models\Family;
 use App\Models\Product;
-use App\Models\ProductTag;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,13 +35,12 @@ class ProductController extends Controller
         if ($request->family) {
             $existFamily = Family::where(['name'=>$request->family])->first();
             if ($existFamily) {
-                $product->family_id = $existFamily->id;
+                $product->family()->associate($existFamily);
             } else {
-                $family = new Family();
-                $family->name = Str::title($request->family);
-                $family->slug = Str::slug($request->family,'-');
-                $family->save();
-                $product->family_id = $family->id;
+                $name = Str::title($request->family);
+                $slug = Str::slug($request->family,'-');
+                $family = $product->family()->create(['name'=>$name,'slug'=>$slug]);
+                $product->family()->associate($family);
             }
         }
 
@@ -64,10 +63,8 @@ class ProductController extends Controller
         $product->instock()->create(['instock'=>(int)$request->instock]);
 
         // tags
-        if ($request->tags) {
-            foreach($request->tags as $tag) {
-                ProductTag::create(['product_id'=>$product->id,'tag_id'=>(int)$tag]);
-            }
+        if ($request->has("tags")) {
+            $product->tags()->sync($request->tags);
         }
 
         // specifications
@@ -119,12 +116,12 @@ class ProductController extends Controller
         if ($request->family) {
             $existFamily = Family::where(['name'=>$request->family])->first();
             if ($existFamily) {
-                $product->family_id = $existFamily->id;
+                $product->family()->associate($existFamily);
             } else {
                 $name = Str::title($request->family);
                 $slug = Str::slug($request->family,'-');
                 $family = $product->family()->create(['name'=>$name,'slug'=>$slug]);
-                $product->family_id = $family->id;
+                $product->family()->associate($family);
             }
         }
 
@@ -153,10 +150,8 @@ class ProductController extends Controller
             && $request->instock !== null
             && $product->instock()->update(['instock'=>(int)$request->instock]);
 
-        if ($request->has("tags") && !empty($request->tags)) {
-            foreach($request->tags as $tag) {
-                // ProductTag::create(['product_id'=>$product->id,'tag_id'=>(int)$tag]);
-            }
+        if ($request->has("tags")) {
+            $product->tags()->sync($request->tags);
         }
 
         if ($request->description) {
