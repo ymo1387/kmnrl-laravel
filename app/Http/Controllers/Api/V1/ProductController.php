@@ -51,6 +51,7 @@ class ProductController extends Controller
             'price',
             'specifications',
             'images',
+            'tags',
         ]);
 
         return new ProductDetailResource($product);

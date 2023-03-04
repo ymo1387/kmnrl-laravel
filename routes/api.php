@@ -33,5 +33,5 @@ Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], funct
 });
 
 Route::group(['prefix'=>'v1/admin', 'namespace'=>'App\Http\Controllers\Api\Admin\V1'], function () {
-    Route::apiResource('products',ProductController::class);
+    Route::apiResource('products',ProductController::class)->except(['show', 'destroy']);
 });
