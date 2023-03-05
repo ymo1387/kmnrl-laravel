@@ -52,15 +52,18 @@ class ProductController extends Controller
             $base = null;
             $discount = null;
         } else {
-            $base = number_format($request->price['base'], 2);
-            $discount =  $request->price['discount']
-                ? number_format($request->price['discount'], 2)
+            $base = number_format($request->base, 2);
+            $discount =  $request->discount
+                ? number_format($request->discount, 2)
                 : null;
         }
         $product->price()->create(['base'=>$base,'discount'=>$discount]);
 
         // instock
-        $product->instock()->create(['instock'=>(int)$request->instock]);
+        $instock = $request->instock
+            ? (int)$request->instock
+            : 0;
+        $product->instock()->create(['instock'=>$instock]);
 
         // tags
         if ($request->has("tags")) {

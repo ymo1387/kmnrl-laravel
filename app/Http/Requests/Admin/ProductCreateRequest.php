@@ -26,7 +26,8 @@ class ProductCreateRequest extends FormRequest
         return [
             'name' => ["required","unique:products,name"],
             'type' => ["required"],
-            'price' => ["nullable","min:0"],
+            'base' => ["nullable","min:0"],
+            'discount' => ["nullable","min:0"],
             'instock' => ["required","integer","min:0"],
             'imgmain' => ["required","image"],
         ];
