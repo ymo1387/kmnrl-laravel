@@ -16,6 +16,7 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::post('/login',[AuthController::class,'login']);
+Route::post('/admin/login',[AuthController::class,'adminLogin']);
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 Route::get('/account',[AuthController::class,'account'])->middleware('auth:sanctum');
@@ -33,5 +34,7 @@ Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], funct
 });
 
 Route::group(['prefix'=>'v1/admin', 'namespace'=>'App\Http\Controllers\Api\Admin\V1'], function () {
-    Route::apiResource('products',ProductController::class)->except(['show', 'destroy']);
+    Route::apiResource('products',ProductController::class)
+        ->except(['show', 'destroy'])
+        ->middleware('auth:sanctum');
 });

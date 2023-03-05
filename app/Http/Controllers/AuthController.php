@@ -33,6 +33,23 @@ class AuthController extends Controller
         return response()->json(['user'=>$user,'token'=>$token->plainTextToken, 'remember'=>$isRemember], 200);
     }
 
+    public function adminLogin (LoginRequest $req) {
+        $credentials = $req->validated();
+        if (!Auth::attempt($credentials)) {
+            return response()->json(["message"=>'Password incorrect'], 401);
+        }
+        // get current user
+        $user = Auth::user();
+        if($user->is_admin !== 1) {
+            return response()->json(['message'=>"Unauthorized user"], 401);
+        }
+        // delete user tokens
+        $user->tokens()->delete();
+        // create token
+        $token = $this->createAuthToken($user, true);
+        return response()->json(['token'=>$token->plainTextToken], 200);
+    }
+
     public function register (RegisterRequest $req) {
         $data = $req->validated();
         // create new user

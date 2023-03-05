@@ -20,8 +20,8 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'type' => $this->type,
             'instock' => $this->instock->instock,
-            'base' => $this->price->base,
-            'discount' => $this->price->discount,
+            'base' => $this->price->base === null ? 0.00 : $this->price->base,
+            'discount' => $this->price->discount === null ? 0.00 : $this->price->discount,
         ];
     }
 }

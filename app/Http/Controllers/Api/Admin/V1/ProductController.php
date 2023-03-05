@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\V1\ProductDetailResource;
 use App\Http\Requests\Admin\ProductCreateRequest;
 use App\Http\Resources\Admin\V1\ProductCollection;
@@ -23,6 +24,9 @@ class ProductController extends Controller
 
     public function store(ProductCreateRequest $request)
     {
+        if (Gate::denies('is-admin')) {
+            return response()->json(['message'=>"unauthorized"], 403);
+        }
         $product = new Product();
         $product->name = Str::title($request->name);
         $product->slug = Str::slug($request->name,'-');
@@ -111,6 +115,9 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        if (Gate::denies('is-admin')) {
+            return response()->json(['message'=>"unauthorized"], 403);
+        }
         if ($request->name) {
             $product->name = Str::title($request->name);
             $product->slug = Str::slug($request->name,'-');
