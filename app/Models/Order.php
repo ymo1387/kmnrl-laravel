@@ -14,8 +14,6 @@ class Order extends Model
         'status'
     ];
 
-    protected $hidden = ['user_id','updated_at'];
-
     public function status() {
         return $this->belongsTo(Orderstatus::class, 'status', 'id');
     }

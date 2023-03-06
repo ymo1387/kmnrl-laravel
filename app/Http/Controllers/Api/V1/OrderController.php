@@ -42,8 +42,9 @@ class OrderController extends Controller
             $cart->delete();
         });
         // send mail
-        $mailorder =  $order->loadMissing(['user:id,username','details.product:id,name'])->loadMissing('details.product.price');
-        Mail::to($request->user()->email)->send(new Ordered($mailorder));
+        // $mailorder =  $order->loadMissing(['user:id,username','details.product:id,name'])->loadMissing('details.product.price');
+        // Mail::to($request->user()->email)->send(new Ordered($mailorder));
+
         return response()->noContent();
     }
 

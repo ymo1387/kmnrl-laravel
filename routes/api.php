@@ -33,8 +33,14 @@ Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], funct
     Route::get('tags',TagController::class);
 });
 
-Route::group(['prefix'=>'v1/admin', 'namespace'=>'App\Http\Controllers\Api\Admin\V1'], function () {
+Route::group([
+    'prefix'=>'v1/admin',
+    'namespace'=>'App\Http\Controllers\Api\Admin\V1',
+    'middleware'=>'auth:sanctum',
+], function () {
     Route::apiResource('products',ProductController::class)
-        ->except(['show', 'destroy'])
-        ->middleware('auth:sanctum');
+        ->except(['show', 'destroy']);
+
+    Route::apiResource('orders',OrderController::class)
+        ->except(['store','show','destroy']);
 });
