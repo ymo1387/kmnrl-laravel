@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +14,15 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::post('/login',[AuthController::class,'login']);
-Route::post('/admin/login',[AuthController::class,'adminLogin']);
-Route::post('/register',[AuthController::class,'register']);
-Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
-Route::get('/account',[AuthController::class,'account'])->middleware('auth:sanctum');
+Route::group([
+    'namespace'=>'App\Http\Controllers',
+    'controller'=>AuthController::class], function () {
+    Route::post('/login','login');
+    Route::post('/admin/login','adminLogin')->middleware('is_admin');
+    Route::post('/register','register');
+    Route::post('/logout','logout')->middleware('auth:sanctum');
+    Route::get('/account','account')->middleware('auth:sanctum');
+});
 
 Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], function () {
     Route::apiResource('products',ProductController::class)->only(['index', 'show']);

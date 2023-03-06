@@ -40,9 +40,6 @@ class AuthController extends Controller
         }
         // get current user
         $user = Auth::user();
-        if($user->is_admin !== 1) {
-            return response()->json(['message'=>"Unauthorized user"], 401);
-        }
         // delete user tokens
         $user->tokens()->delete();
         // create token
