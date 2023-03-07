@@ -17,8 +17,3 @@ use App\Http\Controllers\AuthController;
 Route::get('/', function () {
     return view('welcome');
 });
-// Route::get('/specform', function () {
-//     return view('specForm');
-// })->name('form');
-
-// Route::post('/specform',[AuthController::class,'specificationForm']);
