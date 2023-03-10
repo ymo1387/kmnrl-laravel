@@ -20,11 +20,12 @@ class ProductController extends Controller
         // get filter queries
         $filter = new ProductFilter();
         $filterItems = $filter->transform($request);
-
+        // filter products
         $products = Product::where($filterItems);
         if(count($products->get()) <= 0) {
             return response()->noContent();
         }
+        // eager load
         $products->with([
             'price',
             'tags',
