@@ -18,6 +18,7 @@ class ProductGridResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'type' => $this->type,
             'price' => $this->price,
             'tags' => $this->tags,
             'variantCount' => $this->family_id
