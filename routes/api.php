@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +26,10 @@ Route::group([
 });
 
 Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], function () {
-    Route::apiResource('products',ProductController::class)->only(['index', 'show']);
+    Route::get('products', [ProductController::class, 'list']);
+    Route::get('products/{product}', [ProductController::class, 'detail']);
 
-    Route::middleware(['auth:sanctum','abilities:cart-access'])->group(function () {
+    Route::middleware(['auth:sanctum'])->group(function () {
         Route::apiResource('carts',CartController::class);
         Route::apiResource('orders',OrderController::class)->except(['destroy']);
     });
@@ -36,14 +38,14 @@ Route::group(['prefix'=>'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], funct
     Route::get('tags',TagController::class);
 });
 
-Route::group([
-    'prefix'=>'v1/admin',
-    'namespace'=>'App\Http\Controllers\Api\Admin\V1',
-    'middleware'=>'auth:sanctum',
-], function () {
-    Route::apiResource('products',ProductController::class)
-        ->except(['show', 'destroy']);
+// Route::group([
+//     'prefix'=>'v1/admin',
+//     'namespace'=>'App\Http\Controllers\Api\Admin\V1',
+//     'middleware'=>'auth:sanctum',
+// ], function () {
+//     Route::apiResource('products',ProductController::class)
+//         ->except(['show', 'destroy']);
 
-    Route::apiResource('orders',OrderController::class)
-        ->except(['store','show','destroy']);
-});
+//     Route::apiResource('orders',OrderController::class)
+//         ->except(['store','show','destroy']);
+// });

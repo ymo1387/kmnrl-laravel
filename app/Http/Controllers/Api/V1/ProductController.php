@@ -15,7 +15,7 @@ use App\Http\Resources\V1\ProductGridCollection;
 class ProductController extends Controller
 {
     //  Display a listing of the resource.
-    public function index(Request $request)
+    public function list(Request $request)
     {
         // get filter queries
         $filter = new ProductFilter();
@@ -40,13 +40,8 @@ class ProductController extends Controller
         return new ProductGridCollection($products);
     }
 
-    public function store(StoreProductRequest $request)
-    {
-        //
-    }
-
     //  Display the specified resource.
-    public function show(Product $product)
+    public function detail(Product $product)
     {
         $product->load([
             'price',
@@ -56,15 +51,5 @@ class ProductController extends Controller
         ]);
 
         return new ProductDetailResource($product);
-    }
-
-    public function update(UpdateProductRequest $request, Product $product)
-    {
-        //
-    }
-
-    public function destroy(Product $product)
-    {
-        //
     }
 }
